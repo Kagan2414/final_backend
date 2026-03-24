@@ -228,6 +228,15 @@ def analyze_scene(detections: list[Detection], sensitivity: float) -> tuple[bool
 # ---------------------------------------------------------------------------
 # API Endpoints
 # ---------------------------------------------------------------------------
+@app.get("/api/model-status")
+async def model_status():
+    return {
+        "status": "connected" if model is not None else "disconnected",
+        "model_loaded": model is not None,
+        "model_type": model_type,
+        "uptime_s": round(time.time() - _server_start, 1),
+    }
+    
 @app.get("/health", response_model=HealthResponse)
 async def health_check():
     return HealthResponse(
